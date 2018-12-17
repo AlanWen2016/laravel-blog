@@ -12,5 +12,10 @@
 */
 
 Route::get('/', function () {
-    return json_encode([1234,57654]);
+    return json_encode([1234]);
+});
+
+
+Route::group(['namespace'=>'User', 'prefix' => 'user/'], function (){
+    Route::get('info', ['as' => 'user', 'uses' => 'UserController@index']);
 });
