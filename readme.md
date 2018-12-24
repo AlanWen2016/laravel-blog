@@ -10,14 +10,14 @@ This is back-end system base on Laravel framework 5.5.
 ### Start
 
 
-`
-  git clone 
-`
+```
+  git clone https://github.com/AlanWen2016/laravel-blog.git
+```
 
 install vendor
-`
+```
   composer install
-`
+```
 ```
 php artisan key:generate
 ```
