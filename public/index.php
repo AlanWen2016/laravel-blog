@@ -1,11 +1,16 @@
 <?php
-
 /**
  * Laravel - A PHP Framework For Web Artisans
  *
  * @package  Laravel
  * @author   Taylor Otwell <taylor@laravel.com>
  */
+
+$origin = isset($_SERVER["HTTP_ORIGIN"])? $_SERVER["HTTP_ORIGIN"]:"*";
+header("Access-Control-Allow-Origin:$origin");
+header("Access-Control-Allow-Methods:POST, GET, OPTIONS, PUT, PATCH, DELETE");
+header("Access-Control-Allow-Credentials:true");
+header("Access-Control-Allow-Headers:Content-Type,Access-Token");
 
 define('LARAVEL_START', microtime(true));
 
@@ -20,6 +25,7 @@ define('LARAVEL_START', microtime(true));
 | loading any of our classes later on. It feels great to relax.
 |
 */
+
 
 require __DIR__.'/../vendor/autoload.php';
 
