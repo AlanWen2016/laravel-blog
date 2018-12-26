@@ -21,4 +21,10 @@ class UserService extends CommonService
 
     }
 
+    public function getUserInfo($name, $password)
+    {
+
+
+    }
+
 }
