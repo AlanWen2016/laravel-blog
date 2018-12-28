@@ -15,7 +15,7 @@ class LoginController extends Controller
 
     public function login(Request $request, LoginService $loginService, UserService $userService)
     {
-        try {
+
             $name = $request->input('name');
             $password = $request->input('password');
             if (empty($name) || empty($password)) {
@@ -26,12 +26,15 @@ class LoginController extends Controller
             // 查数据库
             $userInfo = $userService->getUserInfo($name, $password);
             $loginService->makeSession($name);
+            $cookie = cookie('name', 'value', 12, '/');
 
+        return response('Hello World')->cookie($cookie);
+//            return response('Hello World')->withcookie(
+//                'name', 'value', 123,'/', 'alanwen.online'
+//            );
             return response()->json($userInfo);
 
 
-        } catch (Exception $e) {
 
-        }
     }
 }

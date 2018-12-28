@@ -10,6 +10,8 @@ $origin = isset($_SERVER["HTTP_ORIGIN"])? $_SERVER["HTTP_ORIGIN"]:"*";
 header("Access-Control-Allow-Origin:$origin");
 header("Access-Control-Allow-Methods:POST, GET, OPTIONS, PUT, PATCH, DELETE");
 header("Access-Control-Allow-Credentials:true");
+header("Access-Control-Allow-Headers:X-CSRF-Token");
+header("Access-Control-Allow-Headers:X-XSRF-TOKEN");
 header("Access-Control-Allow-Headers:Content-Type,Access-Token");
 
 define('LARAVEL_START', microtime(true));

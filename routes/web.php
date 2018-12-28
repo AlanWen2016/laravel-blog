@@ -22,8 +22,12 @@ Route::get('/', function () {
 });
 
 
-Route::group(['namespace'=>'User', 'prefix' => 'user/'], function (){
-    Route::get('info', ['as' => 'user', 'uses' => 'UserController@index']);
+Route::group(['namespace'=>'User'], function (){
+    Route::get('user/info', ['as' => 'user', 'uses' => 'UserController@index']);
+    Route::get('/qq/login', 'LoginController@qqLoginCallback');
+    Route::get('/qq/login/url', 'LoginController@qqLoginUrl');
+    Route::get('/user/logout', 'LoginController@logout');
+    Route::post('/user/login', 'LoginController@login');
 });
 //Auth::routes();
 
@@ -49,12 +53,4 @@ Route::post('password/reset', 'Auth\ResetPasswordController@reset');
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-
-// 非脚手架路由
-Route::group([ 'namespace' => 'App\Http\Controllers\User', 'middleware' => ''], function () {
-    Route::get('/qq/login', 'LoginController@qqLoginCallback');
-    Route::get('/qq/login/url', 'LoginController@qqLoginUrl');
-    Route::get('/user/logout', 'LoginController@logout');
-    Route::post('/user/login', 'LoginController@login');
-});
 
