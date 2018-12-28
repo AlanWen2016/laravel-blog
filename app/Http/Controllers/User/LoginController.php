@@ -25,10 +25,12 @@ class LoginController extends Controller
 //            Auth::attempt()
             // 查数据库
             $userInfo = $userService->getUserInfo($name, $password);
-            $loginService->makeSession($name);
+            $sid = sha1('alan_' . md5($name . time() . rand(1, 999)) );
+        $sids = cookie('alan_sid' . (env('APP_ENV') == 'local' ? '' : '_' . env('APP_ENV')), $sid,
+            time() + 604800, '/', 'alanwen.online');
             $cookie = cookie('name', 'value', 12, '/');
-
-        return response('Hello World')->cookie($cookie);
+        session(['sid' => $sid]);
+        return response('Hello World')->cookie($cookie)->cookie($sids);
 //            return response('Hello World')->withcookie(
 //                'name', 'value', 123,'/', 'alanwen.online'
 //            );
