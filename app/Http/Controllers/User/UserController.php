@@ -13,9 +13,8 @@ class UserController extends Controller
     {
         $cookie = $request->cookie('alan_sid');
         $sessionId = $request->session()->get('sid');
-        if($cookie == $sessionId){
+        if($cookie && $cookie === $sessionId){
             return '登陆成功';
-
         }
         $users =  $userService->getUser();
         return response()->json($users);

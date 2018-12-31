@@ -26,11 +26,11 @@ class LoginController extends Controller
             // 查数据库
             $userInfo = $userService->getUserInfo($name, $password);
             $sid = sha1('alan_' . md5($name . time() . rand(1, 999)) );
-        $sids = cookie('alan_sid' . (env('APP_ENV') == 'local' ? '' : '_' . env('APP_ENV')), $sid,
+            $sids = cookie('alan_sid' . (env('APP_ENV') == 'local' ? '' : '_' . env('APP_ENV')), $sid,
             time() + 604800, '/', 'alanwen.online');
             $cookie = cookie('name', 'value', 12, '/');
-        session(['sid' => $sid]);
-        return response('Hello World')->cookie($cookie)->cookie($sids);
+            session(['sid' => $sid]);
+             return response('Hello World')->cookie($cookie)->cookie($sids);
 //            return response('Hello World')->withcookie(
 //                'name', 'value', 123,'/', 'alanwen.online'
 //            );
