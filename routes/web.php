@@ -12,18 +12,35 @@
 */
 
 Route::get('/', function () {
+//    $password = encrypt(1234);
+//    var_dump($password);
+//    echo '<br>';
+//    var_dump(decrypt($password));
+//    die()
 
-    $password = encrypt(1234);
-    var_dump($password);
-    echo '<br>';
-    var_dump(decrypt($password));
-    die();
+//
+//    // 指定一个默认值...
+//    $value = session('key', 'default');
+
+    // 在 Session 中存储一条数据...
+//    session(['key' => 'value']);
+    //    $value = session('key');
+
+    dd(session('key'));
     return json_encode([1234]);
 });
 
 
-Route::group(['namespace'=>'User', 'prefix' => 'user/'], function (){
+
+
+
+Route::group(['namespace'=>'User', 'prefix' => 'user/', 'middleware'=>['web', 'verification']], function (){
     Route::get('info', ['as' => 'user', 'uses' => 'UserController@index']);
+    Route::post('register', 'RegisterController@register');
+    Route::get('qq/login', 'LoginController@qqLoginCallback');
+    Route::get('qq/login/url', 'LoginController@qqLoginUrl');
+    Route::get('logout', 'LoginController@logout');
+    Route::post('login', 'LoginController@login');
 });
 //Auth::routes();
 
@@ -50,11 +67,6 @@ Route::post('password/reset', 'Auth\ResetPasswordController@reset');
 Route::get('/home', 'HomeController@index')->name('home');
 
 
-// 非脚手架路由
-Route::group([ 'namespace' => 'App\Http\Controllers\User', 'middleware' => ''], function () {
-    Route::get('/qq/login', 'LoginController@qqLoginCallback');
-    Route::get('/qq/login/url', 'LoginController@qqLoginUrl');
-    Route::get('/user/logout', 'LoginController@logout');
-    Route::post('/user/login', 'LoginController@login');
-});
+
+
 
