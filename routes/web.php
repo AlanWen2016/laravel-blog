@@ -34,9 +34,11 @@ Route::group(['namespace'=>'User'], function (){
 });
 
 
-Route::get('blog/list', function () {
-    return json_encode([1234]);
+Route::group(['namespace' => 'Blog'],function (){
+    Route::get('blog/list', 'BlogController@getBlogs');
+    Route::get('blog/info', 'BlogController@blogInfo');
 });
+
 //Auth::routes();
 
 
