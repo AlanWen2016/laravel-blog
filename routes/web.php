@@ -18,29 +18,24 @@ Route::get('/', function () {
 //    var_dump(decrypt($password));
 //    die()
 
-//
-//    // 指定一个默认值...
-//    $value = session('key', 'default');
 
-    // 在 Session 中存储一条数据...
-//    session(['key' => 'value']);
-    //    $value = session('key');
 
     dd(session('key'));
     return json_encode([1234]);
 });
 
 
+Route::group(['namespace'=>'User'], function (){
+    Route::get('user/info', ['as' => 'user', 'uses' => 'UserController@index']);
+    Route::get('/qq/login', 'LoginController@qqLoginCallback');
+    Route::get('/qq/login/url', 'LoginController@qqLoginUrl');
+    Route::get('/user/logout', 'LoginController@logout');
+    Route::post('/user/login', 'LoginController@login');
+});
 
 
-
-Route::group(['namespace'=>'User', 'prefix' => 'user/', 'middleware'=>['web', 'verification']], function (){
-    Route::get('info', ['as' => 'user', 'uses' => 'UserController@index']);
-    Route::post('register', 'RegisterController@register');
-    Route::get('qq/login', 'LoginController@qqLoginCallback');
-    Route::get('qq/login/url', 'LoginController@qqLoginUrl');
-    Route::get('logout', 'LoginController@logout');
-    Route::post('login', 'LoginController@login');
+Route::get('blog/list', function () {
+    return json_encode([1234]);
 });
 //Auth::routes();
 

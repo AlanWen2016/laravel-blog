@@ -10,18 +10,15 @@ use Illuminate\Support\Facades\Cookie;
 class UserController extends Controller
 {
     //
-    public function index(Request $request, UserService $userService)
+    public function index(UserService $userService, Request $request)
     {
-        $uin = $request->cookie('userInfo');
-
-
-        dd($uin);
+        $cookie = $request->cookie('alan_sid');
+        $sessionId = $request->session()->get('sid');
+        if($cookie && $cookie === $sessionId){
+            return '登陆成功';
+        }
         $users =  $userService->getUser();
-        $foreverCookie = Cookie::forever('forever', 'Success');
-        $tempCookie = Cookie::make('temporary', 'Victory', 5);
-
-        return response()->json([1234])->cookie($foreverCookie);
-
+        return response()->json($users);
     }
 
 }
