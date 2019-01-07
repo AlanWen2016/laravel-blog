@@ -22,7 +22,9 @@ Route::get('/', function () {
 });
 
 
-Route::group(['namespace'=>'User'], function (){
+Route::group(['namespace'=>'User', 'middleware' => ['Verification']], function (){
+    Route::get('/user/login', 'LoginController@login');
+    Route::get('/user/register', 'LoginController@register');
     Route::get('user/info', ['as' => 'user', 'uses' => 'UserController@index']);
     Route::get('/qq/login', 'LoginController@qqLoginCallback');
     Route::get('/qq/login/url', 'LoginController@qqLoginUrl');
@@ -31,8 +33,9 @@ Route::group(['namespace'=>'User'], function (){
 });
 //Auth::routes();
 
-
+Route::post('blog/saveBlog', 'BlogController@saveBlog');
 //Auth::routes();
+
 
 // Authentication Routes...
 Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
@@ -42,6 +45,7 @@ Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 
 // Registration Routes...
 Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
+
 Route::post('register', 'Auth\RegisterController@register');
 
 // Password Reset Routes...

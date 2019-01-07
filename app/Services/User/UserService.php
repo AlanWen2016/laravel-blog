@@ -23,6 +23,8 @@ class UserService extends CommonService
 
     public function getUserInfo($name, $password)
     {
+        $userInfo = User::where('name','=', $name);
+
 
 
     }
