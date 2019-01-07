@@ -12,12 +12,15 @@
 */
 
 Route::get('/', function () {
+//    $password = encrypt(1234);
+//    var_dump($password);
+//    echo '<br>';
+//    var_dump(decrypt($password));
+//    die()
 
-    $password = encrypt(1234);
-    var_dump($password);
-    echo '<br>';
-    var_dump(decrypt($password));
-    die();
+
+
+    dd(session('key'));
     return json_encode([1234]);
 });
 
@@ -31,6 +34,13 @@ Route::group(['namespace'=>'User', 'middleware' => ['Verification']], function (
     Route::get('/user/logout', 'LoginController@logout');
     Route::post('/user/login', 'LoginController@login');
 });
+
+
+Route::group(['namespace' => 'Blog'],function (){
+    Route::get('blog/list', 'BlogController@getBlogs');
+    Route::get('blog/info', 'BlogController@blogInfo');
+});
+
 //Auth::routes();
 
 Route::post('blog/saveBlog', 'BlogController@saveBlog');
@@ -56,5 +66,8 @@ Route::post('password/reset', 'Auth\ResetPasswordController@reset');
 
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+
+
 
 

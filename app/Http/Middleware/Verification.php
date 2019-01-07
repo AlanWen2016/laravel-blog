@@ -21,6 +21,6 @@ class Verification
         if($cookie && $cookie === $sessionId){
             return $next($request);
         }
-        return response()->json(['error' => 1, '用户未登录~']);
+        return response()->json(['error' => 1, '�û�δ��¼~']);
     }
 }
