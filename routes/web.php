@@ -12,20 +12,11 @@
 */
 
 Route::get('/', function () {
-//    $password = encrypt(1234);
-//    var_dump($password);
-//    echo '<br>';
-//    var_dump(decrypt($password));
-//    die()
-
-
-
-    dd(session('key'));
     return json_encode([1234]);
 });
 
-
-Route::group(['namespace'=>'User', 'middleware' => ['Verification']], function (){
+// 无权限接口
+Route::group(['namespace'=>'User'], function (){
     Route::get('/user/login', 'LoginController@login');
     Route::get('/user/register', 'LoginController@register');
     Route::get('user/info', ['as' => 'user', 'uses' => 'UserController@index']);
@@ -34,6 +25,14 @@ Route::group(['namespace'=>'User', 'middleware' => ['Verification']], function (
     Route::get('/user/logout', 'LoginController@logout');
     Route::post('/user/login', 'LoginController@login');
 });
+
+
+
+// 需要登陆校验接口
+Route::group(['namespace'=>'Blog', 'middleware' => ['Verification']], function (){
+    Route::post('blog/create', 'BlogController@saveBlog');
+});
+
 
 
 Route::group(['namespace' => 'Blog'],function (){

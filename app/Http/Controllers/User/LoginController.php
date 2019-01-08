@@ -7,6 +7,7 @@ use App\Services\User\UserService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Mockery\Exception;
 
@@ -27,6 +28,7 @@ class LoginController extends Controller
         if (empty($name) || empty($password)) {
             throw new Exception('参数错误，请重新登录');
         }
+
         // 查数据库
         $userInfo = $userService->getUserInfo($name, $password);
         if(empty($userInfo)){
@@ -58,6 +60,38 @@ class LoginController extends Controller
         }
         return $ret = $loginService->createUser($request->only(['name', 'email', 'password']));
 
+    }
+
+
+    public function qqLoginUrl(LoginService $loginService, Request $request)
+    {
+
+        $refer = $request->input('refer');
+        return [
+            'url' => $loginService->qqLoginUrl($refer),
+        ];
+    }
+
+
+    public function qqLoginCallback(Request $request,LoginService $loginService)
+    {
+        try {
+            $code = $request->input('code');
+            $state = $request->input('state');
+            if (empty($code) || empty($state)) {
+                throw new Exception('回调参数错误，请重新登录');
+            }
+            $data  = $request->session()->get('state');;
+            if (empty($data)) {
+                throw new Exception('回调参数错误，请重新登录');
+            }
+            $result = $loginService->qqOpenIdAndToken($code);
+//            $loginName = $loginService->createUserOfQQOpenid($result['openid'], $result['access_token']);
+//            $loginService->makeSession($loginName);
+
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+        }
     }
 
 
