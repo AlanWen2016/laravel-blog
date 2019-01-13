@@ -42,30 +42,13 @@ class LoginController extends Controller
 
 
     /**
-     * 用户注册
-     * @param Request $request
-     * @param UserService $userService
+     * 拉取登录qq Url
      * @param LoginService $loginService
-     * @return mixed
+     * @param Request $request
+     * @return array
      */
-    public function register(Request $request, UserService $userService, LoginService $loginService)
-    {
-        $validator =  Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
-        ]);
-        if ($validator->fails()) {
-            throw new Exception($validator->messages()->first());
-        }
-        return $ret = $loginService->createUser($request->only(['name', 'email', 'password']));
-
-    }
-
-
     public function qqLoginUrl(LoginService $loginService, Request $request)
     {
-
         $refer = $request->input('refer');
         return [
             'url' => $loginService->qqLoginUrl($refer),
@@ -73,7 +56,14 @@ class LoginController extends Controller
     }
 
 
-    public function qqLoginCallback(Request $request,LoginService $loginService)
+    /**
+     * QQ登录回调
+     * @param Request $request
+     * @param LoginService $loginService
+     * @param UserService $userService
+     * @return $this
+     */
+    public function qqLoginCallback(Request $request,LoginService $loginService, UserService $userService)
     {
         try {
             $code = $request->input('code');
@@ -86,15 +76,27 @@ class LoginController extends Controller
                 throw new Exception('回调参数错误，请重新登录');
             }
             $result = $loginService->qqOpenIdAndToken($code);
-//            $loginName = $loginService->createUserOfQQOpenid($result['openid'], $result['access_token']);
-//            $loginService->makeSession($loginName);
-
+            $userInfo = $userService->createUserOfQQOpenid($result['openid'], $result['access_token']);
+            $loginName = $userInfo->login_name;
+            $sid = sha1('alan_' . md5($loginName . time() . rand(1, 999)) );
+            $cookie = cookie('alan_sid', $sid, 60*24*7, '/', 'alanwen.online');
+            session(['sid' => $sid]);
+            return response()->view('login.login')->withCookie($cookie);
         } catch (\Exception $e) {
             Log::error($e->getMessage());
         }
     }
 
-
+    /**
+     * 登出
+     * @return $this
+     */
+    public function logout()
+    {
+        $cookie = cookie('alan_sid', null, 0, '/', 'alanwen.online');
+        session(['sid' => null]);
+        return response()->json(['code'=> 0, 'msg'=> 'logout successful'])->withCookie($cookie);
+    }
 
 
 

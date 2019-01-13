@@ -18,14 +18,13 @@ Route::get('/', function () {
 // 无权限接口
 Route::group(['namespace'=>'User'], function (){
     Route::get('/user/login', 'LoginController@login');
-    Route::get('/user/register', 'LoginController@register');
+    Route::post('/user/register', 'RegisterController@register');
     Route::get('user/info', ['as' => 'user', 'uses' => 'UserController@index']);
     Route::get('/qq/login', 'LoginController@qqLoginCallback');
     Route::get('/qq/login/url', 'LoginController@qqLoginUrl');
     Route::get('/user/logout', 'LoginController@logout');
     Route::post('/user/login', 'LoginController@login');
 });
-
 
 
 // 需要登陆校验接口
@@ -67,6 +66,5 @@ Route::post('password/reset', 'Auth\ResetPasswordController@reset');
 Route::get('/home', 'HomeController@index')->name('home');
 
 
-
-
-
+Route::get('/guzzle/get', 'TestController@getGuzzle');
+Route::get('/test', 'TestController@test');
