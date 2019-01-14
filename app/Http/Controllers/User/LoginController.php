@@ -81,6 +81,7 @@ class LoginController extends Controller
             $sid = sha1('alan_' . md5($loginName . time() . rand(1, 999)) );
             $cookie = cookie('alan_sid', $sid, 60*24*7, '/', 'alanwen.online');
             session(['sid' => $sid]);
+            session(['loginName' => $loginName]);
             return response()->view('login.login')->withCookie($cookie);
         } catch (\Exception $e) {
             Log::error($e->getMessage());
@@ -93,9 +94,10 @@ class LoginController extends Controller
      */
     public function logout()
     {
-        $cookie = cookie('alan_sid', null, 0, '/', 'alanwen.online');
+        $cookie = cookie('alan_sid', '', 0, '/', 'alanwen.online');
         session(['sid' => null]);
-        return response()->json(['code'=> 0, 'msg'=> 'logout successful'])->withCookie($cookie);
+        session(['loginName' => null]);
+        return response()->json(['code'=> 0, 'msg'=> 'logout successful'])->cookie($cookie);
     }
 
 

@@ -40,18 +40,15 @@ class BlogService extends CommonService
             $id = intval($params);
             $blog = Blog::find($id);
             $blog->title = $params['title'];
-            $blog->content = $params['content'];
+            $blog->content = $params['textValue'];
             $blog->save();
         }else{
             $blog = new Blog();
-
             $blog->title = $params['title'];
-            $blog->tagIds = $params['content'];
+            $blog->content = $params['textValue'];
             $blog->save();
-
         }
-
-
+        return $blog;
     }
 
 }

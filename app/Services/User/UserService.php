@@ -18,10 +18,9 @@ class UserService extends CommonService
 
     }
 
-    public function getUser()
+    public function getUser($loginName)
     {
-        return $users = User::find(1);
-
+        return $users = User::where('login_name','=', $loginName)->first();
     }
 
 
@@ -95,6 +94,8 @@ class UserService extends CommonService
                 'query' =>$params
             ]);
             $result = $response->getBody()->getContents();
+
+            Log::info('userInfo: '.$result);
             $result = json_decode($result, true);
 
             if (!isset($result['ret']) || $result['ret'] != 0) {

@@ -19,7 +19,6 @@ Route::get('/', function () {
 Route::group(['namespace'=>'User'], function (){
     Route::get('/user/login', 'LoginController@login');
     Route::post('/user/register', 'RegisterController@register');
-    Route::get('user/info', ['as' => 'user', 'uses' => 'UserController@index']);
     Route::get('/qq/login', 'LoginController@qqLoginCallback');
     Route::get('/qq/login/url', 'LoginController@qqLoginUrl');
     Route::get('/user/logout', 'LoginController@logout');
@@ -28,6 +27,11 @@ Route::group(['namespace'=>'User'], function (){
 
 
 // 需要登陆校验接口
+Route::group(['namespace'=>'User', 'middleware' => ['Verification']], function (){
+    Route::get('user/info', ['as' => 'user', 'uses' => 'UserController@index']);
+});
+
+
 Route::group(['namespace'=>'Blog', 'prefix'=> 'blog','middleware' => ['Verification']], function (){
     Route::post('/saveBlog', 'BlogController@saveBlog');
 });
