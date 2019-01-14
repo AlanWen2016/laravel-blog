@@ -28,8 +28,8 @@ Route::group(['namespace'=>'User'], function (){
 
 
 // 需要登陆校验接口
-Route::group(['namespace'=>'Blog', 'middleware' => ['Verification']], function (){
-    Route::post('blog/create', 'BlogController@saveBlog');
+Route::group(['namespace'=>'Blog', 'prefix'=> 'blog','middleware' => ['Verification']], function (){
+    Route::post('/saveBlog', 'BlogController@saveBlog');
 });
 
 
@@ -41,7 +41,6 @@ Route::group(['namespace' => 'Blog'],function (){
 
 //Auth::routes();
 
-Route::post('blog/saveBlog', 'BlogController@saveBlog');
 //Auth::routes();
 
 

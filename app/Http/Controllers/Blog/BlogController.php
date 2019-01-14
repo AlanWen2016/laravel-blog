@@ -6,6 +6,7 @@ use App\Services\Blog\BlogService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Validator;
 
 class BlogController extends Controller
 {
@@ -41,6 +42,28 @@ class BlogController extends Controller
 
     }
 
+
+    public function saveBlog(Request $request, BlogService $blogService)
+    {
+        $params = $request->only(['title', 'content', 'tagIds','id']);
+        $message = [
+            'title.required'             => '标题不能为空',
+            'content.required'           => '内容不能为空',
+            'tagIds.required'            => '类型不能为空',
+        ];
+        $validate = Validator::make($params,[
+            'title'               => 'required',
+            'content'             => 'required',
+            'tagIds'              => 'required',
+        ],$message);
+        $errors = $validate->errors();
+        foreach($errors->all() as $error) {
+            return ['error' => 1, 'msg' => $error];
+        }
+        $blogService->saveBlog($params);
+        return $request->all();
+
+    }
 
 
 

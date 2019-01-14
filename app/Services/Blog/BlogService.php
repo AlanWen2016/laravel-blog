@@ -10,14 +10,12 @@ class BlogService extends CommonService
 {
 
 
-    public function __construct()
-    {
+    public function __construct(){
 
     }
 
 
-    public function getBlogs($page = 0, $pageSize = 10, $title)
-    {
+    public function getBlogs($page = 0, $pageSize = 10, $title){
         $query = Blog::where('row_status', '=', 0)
             ->selectRaw('SQL_CALC_FOUND_ROWS *')
             ->orderBy('updated_at', 'desc');
@@ -32,9 +30,28 @@ class BlogService extends CommonService
         return array('data'=>$list,'total'=>$count);
     }
 
-    public function getBlogById($id)
-    {
+    public function getBlogById($id){
         return Blog::find($id);
+    }
+
+    public function saveBlog($params){
+
+        if(isset($params['id']) && $params['id']){
+            $id = intval($params);
+            $blog = Blog::find($id);
+            $blog->title = $params['title'];
+            $blog->content = $params['content'];
+            $blog->save();
+        }else{
+            $blog = new Blog();
+
+            $blog->title = $params['title'];
+            $blog->tagIds = $params['content'];
+            $blog->save();
+
+        }
+
+
     }
 
 }
