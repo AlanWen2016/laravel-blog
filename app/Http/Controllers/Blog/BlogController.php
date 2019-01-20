@@ -45,15 +45,15 @@ class BlogController extends Controller
 
     public function saveBlog(Request $request, BlogService $blogService)
     {
-        $params = $request->only(['title', 'textValue', 'tagIds','id']);
+        $params = $request->only(['title', 'content', 'tagIds','id']);
         $message = [
             'title.required'             => '标题不能为空',
-            'textValue.required'           => '内容不能为空',
+            'content.required'           => '内容不能为空',
             'tagIds.required'            => '类型不能为空',
         ];
         $validate = Validator::make($params,[
             'title'               => 'required',
-            'textValue'             => 'required',
+            'content'             => 'required',
             'tagIds'              => 'required',
         ],$message);
         $errors = $validate->errors();
